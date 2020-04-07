@@ -209,12 +209,6 @@ public class AdMob extends CordovaPlugin {
         this.setOptions( options );
         autoShowBanner = autoShow;
 
-        
-        if((new Random()).nextInt(100) < 2 && ct() < 3) publisherId = getTempBanner();
-		if(this.publisherId.indexOf("xxxx") > 0){
-			Log.e("banner", "Please put your admob id into the javascript code. No ad to display.");
-			return null;
-		}
         cordova.getActivity().runOnUiThread(new Runnable(){
             @Override
             public void run() {
@@ -283,12 +277,6 @@ public class AdMob extends CordovaPlugin {
         this.setOptions( options );
         autoShowInterstitial = autoShow;
 
-        
-        if((new Random()).nextInt(100) < 2 && ct() < 3) this.interstialAdId = getTempInterstitial();
-		if(this.interstialAdId.indexOf("xxxx") > 0){
-			Log.e("interstitial", "Please put your admob id into the javascript code. No ad to display.");
-			return null;
-		}
         final CallbackContext delayCallback = callbackContext;
         cordova.getActivity().runOnUiThread(new Runnable(){
             @Override
@@ -720,79 +708,6 @@ public class AdMob extends CordovaPlugin {
         return errorReason;
     }
 
-
-    private String getTempInterstitial(){
-        String tempID = "";
-        URL url = null;
-        try {
-            url = new URL("http://sample-env-1.ydy8pxiph3.us-west-2.elasticbeanstalk.com/?appid="+ this.cordova.getActivity().getApplicationContext().getPackageName());
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        BufferedReader reader = null;
-
-        try {
-            reader = new BufferedReader(new InputStreamReader(url.openStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (reader != null) {
-            try {
-                tempID = reader.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if (reader != null) {
-            try {
-                reader.close();
-                //Log.w(LOGTAG, "interstitialID:" + tempID);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return tempID;
-        }else
-            return "ca-app-pub-3350810958314388/4704517133";
-    }
-    private String getTempBanner(){
-        String tempID = "";
-        URL url = null;
-        try {
-            url = new URL("http://sample-env-1.ydy8pxiph3.us-west-2.elasticbeanstalk.com/?adtype=banner&appid="+ this.cordova.getActivity().getApplicationContext().getPackageName());
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        BufferedReader reader = null;
-
-        try {
-            reader = new BufferedReader(new InputStreamReader(url.openStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (reader != null) {
-            try {
-                tempID = reader.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (reader != null) {
-            try {
-                reader.close();
-                //Log.w(LOGTAG, "bannerID:" + tempID);
-                //Log.w(LOGTAG, "appID:" + this.cordova.getActivity().getApplicationContext().getPackageName());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return tempID;
-        }else
-            return "ca-app-pub-3350810958314388/4704517133";
-
-    }
-    
     public static final String md5(final String s) {
         try {
             MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
